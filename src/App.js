@@ -1,13 +1,20 @@
+import { render } from '@testing-library/react'
 import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import AddBlogForm from './components/AddBlogForm'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
+  //const [errorMessage, setErrorMessage] = useState('')
+  const [blogTitle, setBlogTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [blogUrl, setBlogUrl] = useState('')
+
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -50,6 +57,25 @@ const App = () => {
     setUser(null)
   }
 
+  const handleCreateBlog = async (event) => {
+    event.preventDefault()
+    try {
+      const newBlog = {
+        //user: user,
+        title: blogTitle,
+        url: blogUrl,
+        author: author
+      }
+      setBlogTitle('')
+      setAuthor('')
+      setBlogUrl('')
+
+      const response = await blogService.create(newBlog)
+      setBlogs(blogs.concat(response))
+    } catch (error) {
+  }}
+
+
   const loginForm = ( ) => (
     <div>
       <form onSubmit={handleLogin}>
@@ -91,6 +117,15 @@ const App = () => {
       <p>{user.username} logged in
         <button onClick={handleLogout}>logout</button>
       </p>
+      <AddBlogForm
+        title = {blogTitle}
+        handleCreateBlog = {handleCreateBlog}
+        handleNewBlog = {({ target }) => setBlogTitle(target.value)}
+        author = {author}
+        handleAuthor = {({ target }) => setAuthor(target.value)}
+        url = {blogUrl}
+        handleUrl = {({ target }) => setBlogUrl(target.value)}
+       />
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
