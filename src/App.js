@@ -4,13 +4,15 @@ import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import AddBlogForm from './components/AddBlogForm'
+import Notification from './components/Notification'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  //const [errorMessage, setErrorMessage] = useState('')
+  const [message, setMessage] = useState(null)
+  const [error, setError] = useState(false)
   const [blogTitle, setBlogTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [blogUrl, setBlogUrl] = useState('')
@@ -47,8 +49,19 @@ const App = () => {
       setUser(user)
       setUsername('')
       setPassword('')
+
+      setMessage(`${user.username} has logged in successfully`)
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
     } catch (exception) {
-      console.log(exception,'test')
+      console.log(exception)
+      setError(true)
+      setMessage(`wrong username or password`)
+      setTimeout(() => {
+        setMessage(null)
+        setError(false)
+      }, 5000)
     }
   }
 
@@ -72,6 +85,11 @@ const App = () => {
 
       const response = await blogService.create(newBlog)
       setBlogs(blogs.concat(response))
+      
+      setMessage(`${response.title} by ${user.username} added`)
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
     } catch (error) {
   }}
 
@@ -106,6 +124,7 @@ const App = () => {
     return (
       <div>
         <h2>Log in to application</h2>
+        <Notification message={message} isError = {error} />
         {loginForm()}
       </div>
     )
@@ -114,6 +133,7 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
+      <Notification message={message} isError = {error}/>
       <p>{user.username} logged in
         <button onClick={handleLogout}>logout</button>
       </p>
