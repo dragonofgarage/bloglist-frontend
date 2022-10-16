@@ -1,9 +1,8 @@
-import { render } from '@testing-library/react'
 import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
-import AddBlogForm from './components/AddBlogForm'
+import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 
@@ -14,9 +13,6 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [message, setMessage] = useState(null)
   const [error, setError] = useState(false)
-  const [blogTitle, setBlogTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [blogUrl, setBlogUrl] = useState('')
 
   const noteFormRef = useRef()        //for hideing form when create new
 
@@ -73,21 +69,11 @@ const App = () => {
     setUser(null)
   }
 
-  const handleCreateBlog = async (event) => {
-    noteFormRef.current.toggleVisibility()
-    event.preventDefault()
+  const handleCreateBlog = async (event,newObject) => {
     try {
-      const newBlog = {
-        //user: user,
-        title: blogTitle,
-        url: blogUrl,
-        author: author
-      }
-      setBlogTitle('')
-      setAuthor('')
-      setBlogUrl('')
-
-      const response = await blogService.create(newBlog)
+      noteFormRef.current.toggleVisibility()
+      event.preventDefault()
+      const response = await blogService.create(newObject)
       setBlogs(blogs.concat(response))
       
       setMessage(`${response.title} by ${user.username} added`)
@@ -144,14 +130,8 @@ const App = () => {
         <button onClick={handleLogout}>logout</button>
       </p>
       <Togglable buttonLabel="new note" ref={noteFormRef}>
-        <AddBlogForm
-          title = {blogTitle}
-          handleCreateBlog = {handleCreateBlog}
-          handleNewBlog = {({ target }) => setBlogTitle(target.value)}
-          author = {author}
-          handleAuthor = {({ target }) => setAuthor(target.value)}
-          url = {blogUrl}
-          handleUrl = {({ target }) => setBlogUrl(target.value)}
+        <BlogForm
+          createBlog={handleCreateBlog}
         />
       </Togglable>
         
