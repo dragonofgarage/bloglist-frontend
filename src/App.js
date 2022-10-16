@@ -1,10 +1,11 @@
 import { render } from '@testing-library/react'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import AddBlogForm from './components/AddBlogForm'
 import Notification from './components/Notification'
+import Togglable from './components/Togglable'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -16,6 +17,8 @@ const App = () => {
   const [blogTitle, setBlogTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [blogUrl, setBlogUrl] = useState('')
+
+  const noteFormRef = useRef()        //for hideing form when create new
 
 
   useEffect(() => {
@@ -71,6 +74,7 @@ const App = () => {
   }
 
   const handleCreateBlog = async (event) => {
+    noteFormRef.current.toggleVisibility()
     event.preventDefault()
     try {
       const newBlog = {
@@ -130,6 +134,8 @@ const App = () => {
     )
   }
 
+  
+
   return (
     <div>
       <h2>blogs</h2>
@@ -137,15 +143,18 @@ const App = () => {
       <p>{user.username} logged in
         <button onClick={handleLogout}>logout</button>
       </p>
-      <AddBlogForm
-        title = {blogTitle}
-        handleCreateBlog = {handleCreateBlog}
-        handleNewBlog = {({ target }) => setBlogTitle(target.value)}
-        author = {author}
-        handleAuthor = {({ target }) => setAuthor(target.value)}
-        url = {blogUrl}
-        handleUrl = {({ target }) => setBlogUrl(target.value)}
-       />
+      <Togglable buttonLabel="new note" ref={noteFormRef}>
+        <AddBlogForm
+          title = {blogTitle}
+          handleCreateBlog = {handleCreateBlog}
+          handleNewBlog = {({ target }) => setBlogTitle(target.value)}
+          author = {author}
+          handleAuthor = {({ target }) => setAuthor(target.value)}
+          url = {blogUrl}
+          handleUrl = {({ target }) => setBlogUrl(target.value)}
+        />
+      </Togglable>
+        
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
