@@ -6,6 +6,7 @@ import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 
+
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
@@ -129,7 +130,7 @@ const App = () => {
       <p>{user.username} logged in
         <button onClick={handleLogout}>logout</button>
       </p>
-      <Togglable buttonLabel="new note" ref={noteFormRef}>
+      <Togglable buttonLabel="create new blog" ref={noteFormRef}>
         <BlogForm
           createBlog={handleCreateBlog}
         />
