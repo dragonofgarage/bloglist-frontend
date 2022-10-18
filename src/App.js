@@ -70,10 +70,9 @@ const App = () => {
     setUser(null)
   }
 
-  const handleCreateBlog = async (event,newObject) => {
+  const handleCreateBlog = async (newObject) => {
     try {
       noteFormRef.current.toggleVisibility()
-      event.preventDefault()
       const response = await blogService.create(newObject)
       setBlogs(blogs.concat(response))
       

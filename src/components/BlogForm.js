@@ -20,6 +20,7 @@ const BlogForm = ({ createBlog }) => {
 
 
   const addBlog = async (event) => {
+    event.preventDefault()
     createBlog({
         //user: user,
         title: blogTitle,
