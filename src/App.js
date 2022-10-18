@@ -75,13 +75,23 @@ const App = () => {
       noteFormRef.current.toggleVisibility()
       const response = await blogService.create(newObject)
       setBlogs(blogs.concat(response))
-      
+
       setMessage(`${response.title} by ${user.username} added`)
       setTimeout(() => {
         setMessage(null)
       }, 5000)
     } catch (error) {
   }}
+
+
+  const handleUpdateLikes = async (id, newObjcet) => {
+    try {
+      const response = await blogService.update(id, newObjcet)
+      setBlogs(blogs.map(blog => blog.id !== id ? blog : response))
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
 
   const loginForm = ( ) => (
@@ -136,7 +146,7 @@ const App = () => {
       </Togglable>
         
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} handleUpdateLikes={handleUpdateLikes}/>
       )}
     </div>
   )

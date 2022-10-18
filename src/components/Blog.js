@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-const Blog = ({blog}) => {
+const Blog = ({blog, handleUpdateLikes}) => {
   const [showDetail, setShowDetail] = useState(false)
 
   const blogBlock = {
@@ -12,10 +12,6 @@ const Blog = ({blog}) => {
 
   const showButtonStyle = {
     display: 'inline-block',
-  }
-
-  const noneStyle = {
-    display: 'none',
   }
 
   const blogListStyle = {
@@ -31,6 +27,13 @@ const Blog = ({blog}) => {
     setShowDetail(!showDetail)
   }
 
+  const updateLikes = () => {
+    const newObject = {
+      likes: blog.likes + 1
+    }
+    handleUpdateLikes(blog.id, newObject)
+  }
+
   return(
     <div style={blogBlock}>
       {blog.title}
@@ -40,7 +43,7 @@ const Blog = ({blog}) => {
         <div style={showWhenVisible}>
           <ul style={blogListStyle} >
             <li>{blog.url}</li>
-            <li>{blog.likes}<button>like</button></li>
+            <li>likes: {blog.likes}<button onClick={updateLikes}>like</button></li>
             <li>{blog.author}</li>
           </ul>
         </div>
