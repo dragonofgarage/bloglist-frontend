@@ -1,8 +1,9 @@
 import { useState } from "react"
 
-const Blog = ({blog, handleUpdateLikes}) => {
+const Blog = ({blog, handleUpdateLikes, handleRemoveBlog, user}) => {
   const [showDetail, setShowDetail] = useState(false)
 
+  //inline style
   const blogBlock = {
     border:'2px solid black',
     paddingTop:'10px',
@@ -21,7 +22,11 @@ const Blog = ({blog, handleUpdateLikes}) => {
   }
 
 
+
+
   const showWhenVisible = { display: showDetail? '' : 'none' }
+  const showRemoveBtn = { display: blog.user[0].id  === user.id ? '' : 'none' }
+
 
   const handleShowDetail = () => {
     setShowDetail(!showDetail)
@@ -32,6 +37,12 @@ const Blog = ({blog, handleUpdateLikes}) => {
       likes: blog.likes + 1
     }
     handleUpdateLikes(blog.id, newObject)
+  }
+
+  const removeBlog = () => {
+    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)){
+      handleRemoveBlog(blog.id)
+    }
   }
 
   return(
@@ -46,6 +57,11 @@ const Blog = ({blog, handleUpdateLikes}) => {
             <li>likes: {blog.likes}<button onClick={updateLikes}>like</button></li>
             <li>{blog.author}</li>
           </ul>
+          {<button
+            style={showRemoveBtn}
+            onClick={removeBlog}>
+              remove
+            </button>}
         </div>
        
     </div>  

@@ -93,6 +93,20 @@ const App = () => {
     }
   }
 
+  const handleRemoveBlog = async (id) => {
+    try {
+      await blogService.remove(id)
+      setBlogs(blogs.filter(blog => blog.id !== id))
+
+      setMessage(`remove successful`)
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
 
   const loginForm = ( ) => (
     <div>
@@ -146,7 +160,13 @@ const App = () => {
       </Togglable>
         
       {blogs.map(blog=>blog).sort((a,b) => a.likes > b.likes ? -1 : 1).map(blog =>
-        <Blog key={blog.id} blog={blog} handleUpdateLikes={handleUpdateLikes}/>
+        <Blog
+          key={blog.id}
+          blog={blog}
+          handleUpdateLikes={handleUpdateLikes}
+          handleRemoveBlog={handleRemoveBlog}
+          user={user}     //pass user info to component
+          />
       )}
     </div>
   )
