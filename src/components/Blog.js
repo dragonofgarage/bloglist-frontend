@@ -1,6 +1,6 @@
-import { useState } from "react"
+import { useState } from 'react'
 
-const Blog = ({blog, handleUpdateLikes, handleRemoveBlog, user}) => {
+const Blog = ({ blog, handleUpdateLikes, handleRemoveBlog, user }) => {
   const [showDetail, setShowDetail] = useState(false)
 
   //inline style
@@ -46,25 +46,25 @@ const Blog = ({blog, handleUpdateLikes, handleRemoveBlog, user}) => {
   }
 
   return(
-    <div style={blogBlock}>
+    <div style={blogBlock} className='blog'>
       {blog.title}
-        <div style={showButtonStyle}>
-          {<button onClick={handleShowDetail}>{showDetail ? 'view' : 'hide'}</button>}
-        </div>
-        <div style={showWhenVisible}>
-          <ul style={blogListStyle} >
-            <li>{blog.url}</li>
-            <li>likes: {blog.likes}<button onClick={updateLikes}>like</button></li>
-            <li>{blog.author}</li>
-          </ul>
-          {<button
-            style={showRemoveBtn}
-            onClick={removeBlog}>
+      <div style={showButtonStyle}>
+        {<button onClick={handleShowDetail}>{showDetail ? 'view' : 'hide'}</button>}
+      </div>
+      <div style={showWhenVisible} className='blogDetail'>
+        <ul style={blogListStyle} >
+          <li>{blog.url}</li>
+          <li>likes: {blog.likes}<button onClick={updateLikes}>like</button></li>
+          <li>{blog.author}</li>
+        </ul>
+        {<button
+          style={showRemoveBtn}
+          onClick={removeBlog}>
               remove
-            </button>}
-        </div>
-       
-    </div>  
+        </button>}
+      </div>
+
+    </div>
   )
 }
 

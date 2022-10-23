@@ -21,7 +21,7 @@ const App = () => {
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
-    )  
+    )
   }, [])
 
   //get token
@@ -57,7 +57,7 @@ const App = () => {
     } catch (exception) {
       console.log(exception)
       setError(true)
-      setMessage(`wrong username or password`)
+      setMessage('wrong username or password')
       setTimeout(() => {
         setMessage(null)
         setError(false)
@@ -81,7 +81,8 @@ const App = () => {
         setMessage(null)
       }, 5000)
     } catch (error) {
-  }}
+      console.log(error)
+    }}
 
 
   const handleUpdateLikes = async (id, newObjcet) => {
@@ -98,7 +99,7 @@ const App = () => {
       await blogService.remove(id)
       setBlogs(blogs.filter(blog => blog.id !== id))
 
-      setMessage(`remove successful`)
+      setMessage('remove successful')
       setTimeout(() => {
         setMessage(null)
       }, 5000)
@@ -113,7 +114,7 @@ const App = () => {
       <form onSubmit={handleLogin}>
         <div>
           username
-          <input 
+          <input
             type = "text"
             value = {username}
             name = "username"
@@ -122,7 +123,7 @@ const App = () => {
         </div>
         <div>
           password
-          <input 
+          <input
             type = "text"
             value = {password}
             name = "password"
@@ -144,7 +145,7 @@ const App = () => {
     )
   }
 
-  
+
 
   return (
     <div>
@@ -158,15 +159,15 @@ const App = () => {
           createBlog={handleCreateBlog}
         />
       </Togglable>
-        
-      {blogs.map(blog=>blog).sort((a,b) => a.likes > b.likes ? -1 : 1).map(blog =>
+
+      {blogs.map(blog => blog).sort((a,b) => a.likes > b.likes ? -1 : 1).map(blog =>
         <Blog
           key={blog.id}
           blog={blog}
           handleUpdateLikes={handleUpdateLikes}
           handleRemoveBlog={handleRemoveBlog}
           user={user}     //pass user info to component
-          />
+        />
       )}
     </div>
   )
