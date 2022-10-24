@@ -3,6 +3,7 @@ import '@testing-library/jest-dom/extend-expect'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import Blog from './Blog'
+import { mockComponent } from 'react-dom/test-utils'
 
 describe('<Blog />', () => {
   const testUser = {
@@ -19,10 +20,10 @@ describe('<Blog />', () => {
   }
 
   let container
-  const mockHandler = jest.fn()
+  //const mockHandler = jest.fn()
 
   beforeEach(() => {
-    container = render(<Blog blog={sampleBlog} user={testUser}/> ).container
+    container = render(<Blog blog={sampleBlog} user={testUser} /*handleUpdateLikes={mockHandler}*//> ).container
   })
 
 
@@ -46,6 +47,19 @@ describe('<Blog />', () => {
 
     expect(blogUrl).toBeVisible()
     expect(likes).toBeVisible()
+  })
+
+  test('click like button twice', async () => {
+    const mockHandler = jest.fn()
+    const user = userEvent.setup()
+    const like = container.querySelector('.likes')
+    like.onclick = mockHandler
+    screen.debug(like)
+
+    await user.click(like)
+    await user.click(like)
+
+    expect(mockHandler.mock.calls).toHaveLength(2)
   })
 
 })
