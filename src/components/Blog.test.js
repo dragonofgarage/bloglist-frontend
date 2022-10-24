@@ -1,9 +1,8 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
-import { render, screen, cleanup  } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import Blog from './Blog'
-
-afterEach(cleanup)
 
 describe('<Blog />', () => {
   const testUser = {
@@ -20,9 +19,10 @@ describe('<Blog />', () => {
   }
 
   let container
+  const mockHandler = jest.fn()
 
   beforeEach(() => {
-    container = render(<Blog blog={sampleBlog} user={testUser}/>).container
+    container = render(<Blog blog={sampleBlog} user={testUser}/> ).container
   })
 
 
@@ -35,6 +35,17 @@ describe('<Blog />', () => {
   test('not display url and likes in default situation', () => {
     const div = container.querySelector('.blogDetail')
     expect(div).not.toBeVisible()
+  })
+
+  test('click button and show the detail', async () => {
+    const user = userEvent.setup()
+    const button = container.querySelector('.detailButton')
+    await user.click(button)
+    const blogUrl = container.querySelector('.blogUrl')
+    const likes = container.querySelector('.likes')
+
+    expect(blogUrl).toBeVisible()
+    expect(likes).toBeVisible()
   })
 
 })

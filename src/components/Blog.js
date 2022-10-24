@@ -49,12 +49,12 @@ const Blog = ({ blog, handleUpdateLikes, handleRemoveBlog, user }) => {
     <div style={blogBlock} className='blog'>
       {blog.title}
       <div style={showButtonStyle}>
-        {<button onClick={handleShowDetail}>{showDetail ? 'view' : 'hide'}</button>}
+        {<button onClick={handleShowDetail} className='detailButton'>{showDetail ? 'view' : 'hide'}</button>}
       </div>
       <div style={showWhenVisible} className='blogDetail'>
         <ul style={blogListStyle} >
-          <li>{blog.url}</li>
-          <li>likes: {blog.likes}<button onClick={updateLikes}>like</button></li>
+          <li className='blogUrl'>{blog.url}</li>
+          <li className='likes'>likes: {blog.likes}<button className='likeBtn' onClick={updateLikes}>like</button></li>
           <li>{blog.author}</li>
         </ul>
         {<button
