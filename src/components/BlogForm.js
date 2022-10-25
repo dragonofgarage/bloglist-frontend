@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-const InputForm = ({ name, value, handleProcess }) => (
+const InputForm = ({ name, value, handleProcess,placeholder }) => (
   <div>
     {name}
     <input
@@ -8,6 +8,7 @@ const InputForm = ({ name, value, handleProcess }) => (
       value = {value}
       name = {name}
       onChange = {handleProcess}
+      placeholder={placeholder}
     />
   </div>
 )
@@ -40,18 +41,21 @@ const BlogForm = ({ createBlog }) => {
         name = "title"
         value = {blogTitle}
         handleProcess = {({ target }) => setBlogTitle(target.value)}
+        placeholder="write title here"
       />
       <InputForm
         name = "author"
         value = {author}
         handleProcess = {({ target }) => setAuthor(target.value)}
+        placeholder="write author here"
       />
       <InputForm
         name = "url"
         value = {blogUrl}
         handleProcess = {({ target }) => setBlogUrl(target.value)}
+        placeholder="write url here"
       />
-      <button>create</button>
+      <button type="submit">create</button>
     </form>
   )}
 
