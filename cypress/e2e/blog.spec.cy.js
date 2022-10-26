@@ -21,14 +21,13 @@ describe('Blog app', function() {
 
   describe('login', function() {
     it('succeeds with correct credentials', function() {
-      cy.get('#username').type('root')
-      cy.get('#password').type('password')
-      cy.contains('login').click()
+      cy.login({ username: 'root', password: 'password' })
+
       cy.contains('root logged in')
       cy.contains('logout')
     })
 
-    it.only('fails with wrong credentials', function() {
+    it('fails with wrong credentials', function() {
       cy.get('#username').type('test')
       cy.get('#password').type('password')
       cy.contains('login').click()
@@ -36,6 +35,21 @@ describe('Blog app', function() {
       cy.get('.errorMessage')
         .should('contain', 'wrong username or password')
         .and('have.css', 'color', 'rgb(255, 0, 0)')
+    })
+  })
+
+  describe('When logged in', function() {
+    beforeEach(function() {
+      cy.login({ username: 'root', password: 'password' })
+    })
+
+    it.only('a blog can be created', function() {
+      cy.contains('create new blog').click()
+      cy.get('#title').type('test')
+      cy.get('#author').type('testAuthor')
+      cy.get('#url').type('test.com')
+      cy.get('#create-button').click()
+      cy.get('.blog').contains('test')
     })
   })
 })

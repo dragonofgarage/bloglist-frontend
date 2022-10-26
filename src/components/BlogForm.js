@@ -4,6 +4,7 @@ const InputForm = ({ name, value, handleProcess,placeholder }) => (
   <div>
     {name}
     <input
+      id = {name}
       type = "text"
       value = {value}
       name = {name}
@@ -55,7 +56,7 @@ const BlogForm = ({ createBlog }) => {
         handleProcess = {({ target }) => setBlogUrl(target.value)}
         placeholder="write url here"
       />
-      <button type="submit">create</button>
+      <button id="create-button" type="submit">create</button>
     </form>
   )}
 
