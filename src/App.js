@@ -89,7 +89,6 @@ const App = () => {
     try {
       const response = await blogService.update(id, newObjcet)
       setBlogs(blogs.map(blog => blog.id !== id ? blog : { ...response, user: blog.user }))
-      console.log('response: ', response)
     } catch (error) {
       console.log(error)
     }

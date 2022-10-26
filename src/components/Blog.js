@@ -27,9 +27,6 @@ const Blog = ({ blog, handleUpdateLikes, handleRemoveBlog, user }) => {
   const showWhenVisible = { display: showDetail? '' : 'none' }
   const showRemoveBtn = { display: blog.user[0].id  === user.id ? '' : 'none' }
 
-  console.log(blog.user[0].id  === user.id ? 'yes' : 'no')
-  console.log('blog user id: ',blog.user[0])
-  console.log('user id: ', user.id)
   const handleShowDetail = () => {
     setShowDetail(!showDetail)
   }
@@ -39,7 +36,6 @@ const Blog = ({ blog, handleUpdateLikes, handleRemoveBlog, user }) => {
       likes: blog.likes + 1
     }
 
-    console.log('newObject', newObject)
     handleUpdateLikes(blog.id, newObject)
   }
 
