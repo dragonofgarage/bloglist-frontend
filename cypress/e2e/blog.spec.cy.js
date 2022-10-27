@@ -57,12 +57,38 @@ describe('Blog app', function() {
       cy.get('html').should('not.contain', 'testTitle')
     })
 
-    it.only('a blog can\'t be deleted by other user', function() {
+    it('a blog can\'t be deleted by other user', function() {
       cy.createBlog({ title: 'testTitle', author: 'testAuthor', url: 'testUrl' })
       cy.contains('logout').click()
       cy.login({ username: 'admin', password: 'password' })
       cy.get('.detailButton').click()
         .should('not.contain', 'remove')
+    })
+
+    describe.only('blog display order', function() {
+      beforeEach(function() {
+        cy.createBlog({ title: 'The title with the most likes', author: 'testAuthor', url: 'testUrl' })
+        cy.createBlog({ title: 'The title with the second most likes', author: 'testAuthor', url: 'testUrl' })
+
+        cy.contains('The title with the most likes')
+          .contains('view').click()
+        cy.contains('The title with the second most likes')
+          .contains('view').click()
+        cy.contains('The title with the most likes').parent().within(function() {
+          cy.contains('like').click()
+          if(cy.contains('likes: 1'))
+            cy.contains('like').click()
+        })
+        if(cy.contains('likes: 2'))
+          cy.contains('The title with the second most likes')
+            .contains('like').click()
+      })
+
+      it('sort of the blog', function() {
+        cy.get('.blog').eq(0).should('contain', 'The title with the most likes')
+        cy.get('.blog').eq(1).should('contain', 'The title with the second most likes')
+      })
+
     })
   })
 })
